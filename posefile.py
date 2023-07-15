@@ -23,6 +23,7 @@ class PoseDetection:
         self.pose = self.mpPose.Pose(self.static_image_mode, self.model_complexity, self.smooth_landmarks, self.enable_segmentation, self.smooth_segmentation, self.min_detection_confidence, self.min_tracking_confidence)
 
     def find_pose(self, img, draw=True):
+        """ Get the landmark results of a given image. """
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.results = self.pose.process(imgRGB)
 
@@ -33,6 +34,7 @@ class PoseDetection:
         return img
 
     def find_position(self, img, draw=True):
+        """ Get the position of each landmark discovered so far. """
         self.lmList = []
 
         if self.results.pose_landmarks:
