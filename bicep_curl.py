@@ -5,20 +5,22 @@ import posefile as pose
 def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak_warning=False):
     cap = cv2.VideoCapture(video_path)
     detector = pose.PoseDetection()
-    # TODO add vars as needed
     direction = 0 # 0 is up, 1 is down
     count = 0
     last_count = 0
     last_percentage = 0
     delay = 0
 
+    print("Checking video input...")
+
     while cap.isOpened():
         success, frame = cap.read()
 
         if not success:
+            print("Could not get frame.")
             break
 
-        frame = cv2.resize(frame, (720 480))
+        frame = cv2.resize(frame, (720, 480))
         frame = detector.find_pose(frame, False)
 
         landmark_list = detector.find_position(frame)
@@ -33,7 +35,7 @@ def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak
                 angle = detector.find_angle(frame, 12, 14, 16)
 
             percentage = np.interp(angle, (25, 155), (0, 100))
-            print(percentage, angle)
+            # print(percentage, angle)
 
             if direction == 0:
                 # raising the counter for delay
@@ -43,7 +45,7 @@ def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak
                 # notifying upon reaching limit
                 if delay >= 5: # change as needed for timing
                     print("Lift your arm higher")
-                    # TODO add voice prompt as well
+                    voice.speak("Lift your arm higher")
                     if speak_warning:
                         pass
                     delay = 0
@@ -55,7 +57,7 @@ def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak
                 # notifying upon reaching limit
                 if delay >= 5: # change as needed for timing
                     print("Lower you arm")
-                    # TODO add voice prompt as well
+                    voice.speak("Lower your arm")
                     if speak_warning:
                         pass
                     delay = 0
@@ -64,7 +66,7 @@ def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak
                 delay = 0
                 direction = 1
                 count += 0.5
-            elif percentage == 0 and driection == 1
+            elif percentage == 0 and direction == 1:
                 delay = 0
                 direction = 0
                 count += 0.5
@@ -75,7 +77,7 @@ def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak
                 last_count = count
                 # TODO add voice sequence
 
-            cv2.putText(frame, str(count), (50, 100), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 0), 4)
+            cv2.putText(frame, f"{int(count)} ({'left' if left else 'right'} arm)", (50, 100), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 0), 4)
         cv2.imshow("Bicep Curl Analysis", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

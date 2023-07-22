@@ -1,4 +1,29 @@
 # Boot up the analyzer
+from analyzer import FitnessAnalyzer
+
+fitness = FitnessAnalyzer()
+
+fitness.analyze_exercise(exercise_type="bicep_curl") # provide video path if file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # import cv2
