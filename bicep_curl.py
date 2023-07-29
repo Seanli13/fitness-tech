@@ -45,9 +45,8 @@ def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak
                 # notifying upon reaching limit
                 if delay >= 5: # change as needed for timing
                     print("Lift your arm higher")
-                    voice.speak("Lift your arm higher")
                     if speak_warning:
-                        pass
+                        voice.speak("Lift your arm higher")
                     delay = 0
             elif direction == 1:
                 # raising the counter for delay
@@ -57,9 +56,8 @@ def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak
                 # notifying upon reaching limit
                 if delay >= 5: # change as needed for timing
                     print("Lower you arm")
-                    voice.speak("Lower your arm")
                     if speak_warning:
-                        pass
+                        voice.speak("Lower your arm")
                     delay = 0
 
             if percentage == 100 and direction == 0:
@@ -75,7 +73,7 @@ def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak
 
             if speak_count and last_count != int(count):
                 last_count = count
-                # TODO add voice sequence
+                voice.speak(last_count)
 
             cv2.putText(frame, f"{int(count)} ({'left' if left else 'right'} arm)", (50, 100), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 0), 4)
         cv2.imshow("Bicep Curl Analysis", frame)
