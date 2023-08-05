@@ -1,6 +1,7 @@
 from voice import Voice
 from bicep_curl import analyze_bicep_curl
 from pushup import analyze_pushups
+from plank import analyze_plank
 
 class FitnessAnalyzer:
     def __init__(self):
@@ -12,3 +13,6 @@ class FitnessAnalyzer:
 
         if exercise_type == 'pushups': 
             analyze_pushups(self.voice, video_path=video_path)
+
+        if exercise_type == 'planks': 
+            analyze_plank(self.voice, video_path=video_path)
