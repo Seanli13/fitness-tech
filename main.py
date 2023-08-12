@@ -3,7 +3,7 @@ from analyzer import FitnessAnalyzer
 
 fitness = FitnessAnalyzer()
 
-fitness.analyze_exercise(exercise_type="bicep_curl") # provide video path if file
+fitness.analyze_exercise(exercise_type="deadlift") # provide video path if file
 
 
 

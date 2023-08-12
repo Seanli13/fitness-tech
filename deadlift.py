@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import posefile as pose
 
-def analyze_squat(voice, video_path=0, speak_warning=False):
+def analyze_deadlift(voice, video_path=0, speak_warning=False):
     cap = cv2.VideoCapture(video_path)
     detector = pose.PoseDetection()
     direction = 1
@@ -51,7 +51,7 @@ def analyze_squat(voice, video_path=0, speak_warning=False):
                         voice.speak("Keep going down")
 
             # General Checks
-            if hip_angle < 50:
+            if hip_angle < 60:
                 hip_delay += 1
             if knee_angle < 50:
                 knee_delay += 1
@@ -69,5 +69,3 @@ def analyze_squat(voice, video_path=0, speak_warning=False):
     
     cap.release()
     cv2.destroyAllWindows()
-
-        #12 24 26 28 or 11 23 25 27

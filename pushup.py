@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import posefile as pose
+import util
 
 def analyze_pushups(voice, video_path=0, left=False, speak_count=False, speak_warning=False):
     cap = cv2.VideoCapture(video_path)
@@ -13,6 +14,8 @@ def analyze_pushups(voice, video_path=0, left=False, speak_count=False, speak_wa
     hip_delay = 0
     elbow_delay = 0
     delay = 0
+
+    util.countdown(3, voice)
 
     while cap.isOpened():
         success, frame = cap.read()
@@ -47,6 +50,7 @@ def analyze_pushups(voice, video_path=0, left=False, speak_count=False, speak_wa
                     print("Keep going up!")
                     if speak_warning:
                         voice.speak("Keep going up")
+                    delay = 0
             elif direction == 1:
                 if last_percentage > percentage:
                     delay += 1
@@ -55,6 +59,7 @@ def analyze_pushups(voice, video_path=0, left=False, speak_count=False, speak_wa
                     print("Keep going down!")
                     if speak_warning:
                         voice.speak("Keep going down")
+                    delay = 0
 
             # General Checks
             if leg_angle < 160:
