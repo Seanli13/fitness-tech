@@ -3,7 +3,8 @@ from analyzer import FitnessAnalyzer
 
 fitness = FitnessAnalyzer()
 
-fitness.analyze_exercise(exercise_type="deadlift") # provide video path if file
+fitness.setup_new_user()
+# fitness.analyze_exercise(exercise_type="deadlift") # provide video path if file
 
 
 
