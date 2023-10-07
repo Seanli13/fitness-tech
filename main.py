@@ -1,9 +1,24 @@
 # Boot up the analyzer
 from analyzer import FitnessAnalyzer
+import json
 
-fitness = FitnessAnalyzer()
+# Open and read the contents of your text file
+with open('user.txt', 'r') as file:
+    content = file.read()
 
-fitness.setup_new_user()
+# Load the JSON content into a Python dictionary
+data = json.loads(content)
+file.close()
+
+fitness = FitnessAnalyzer(data)
+
+# Now, 'data' contains the dictionary with the contents from your file
+if len(data) > 0:
+    print(f"{len(data)} user(s) found!")
+    fitness.validate_user()
+else:
+    print("No user found, setting up new user.")
+    fitness.setup_new_user()
 # fitness.analyze_exercise(exercise_type="deadlift") # provide video path if file
 
 

@@ -13,7 +13,8 @@ from vosk import Model, KaldiRecognizer
 import time
 
 class FitnessAnalyzer:
-    def __init__(self):
+    def __init__(self, user_data=None):
+        self.user_data = user_data
         self.voice = Voice()
         # Setup Vosk
         if not os.path.exists("vosk-model-small-en-us-0.15"):
@@ -44,9 +45,31 @@ class FitnessAnalyzer:
         elif exercise_type == 'deadlift':
             analyze_deadlift(self.voice, video_path=video_path)
 
+    def validate_response(self, message, mode=0):
+        message = message['text'].strip()
+        if mode == 0: # checking yes
+            affirmatives = ["yes", "yea", "yeah", "sure"]
+            for word in affirmatives:
+                if word in message:
+                    return True
+        elif mode == 1: # checking no
+            affirmatives = ["no", "nope"]
+            for word in affirmatives:
+                if word in message:
+                    return True
+        elif mode == 2: # checking name
+            banned_phrases = {"hello there", "yes", "no", "there"}
+            if 1 <= len(message) <= 20 and message not in banned_phrases and len(message.split()) <= 10:
+                return True
+        elif mode == 3: # checking age
+            affirmatives = {"thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty one", "twenty two", "twenty three", "twenty four", "twenty five", "twenty six", "twenty seven", "twenty eight", "twenty nine", "thirty", "thirty one", "thirty two", "thirty three", "thirty four", "thirty five", "thirty six", "thirty seven", "thirty eight", "thirty nine", "forty", "forty one", "forty two", "forty three", "forty four", "forty five", "forty six", "forty seven", "forty eight", "forty nine", "fifty", "fifty one", "fifty two", "fifty three", "fifty four", "fifty five", "fifty six", "fifty seven", "fifty eight", "fifty nine", "sixty", "sixty one", "sixty two", "sixty three", "sixty four", "sixty five", "sixty six", "sixty seven", "sixty eight", "sixty nine", "seventy", "seventy one", "seventy two", "seventy three", "seventy four", "seventy five", "seventy six", "seventy seven", "seventy eight", "seventy nine", "eighty"}
+            if message in affirmatives:
+                return True
+        return False
+
     def setup_new_user(self):
-        print(f"Hello there! Thank for using [insert product name]. Before we begin, I would like to know a little bit about yourself.")
-        self.voice.speak(f"Hello there! Thank for using [insert product name]. Before we begin, I would like to know a little bit about yourself.")
+        print(f"Hello there! Thank for using FitnessTech. Before we begin, I would like to know a little bit about yourself.")
+        self.voice.speak(f"Hello there! Thank for using FitnessTech. Before we begin, I would like to know a little bit about yourself.")
         print("What is your name?")
         self.voice.speak("What is your name?")
 
@@ -59,18 +82,20 @@ class FitnessAnalyzer:
                 break
             if self.rec.AcceptWaveform(data):
                 result_str = self.rec.Result()
-                print(result_str)
+                print(json.loads(result_str)["text"])
 
                 # Implement commands here
                 result = json.loads(result_str)
-                if 'text' in result and len(result['text']) > 0 and not asking_confirm:
+                if 'text' in result and not asking_confirm and self.validate_response(result, mode=2):
                     name = result["text"]
                     print(f"I heard {name}, is this correct?")
+                    self.voice.speak(f"I heard {name}, is this correct?")
                     asking_confirm = True
-                elif asking_confirm and 'text' in result and 'yes' in result['text']:
+                elif asking_confirm and 'text' in result and self.validate_response(result, mode=0):
                     break
-                elif asking_confirm and 'text' in result and 'no' in result['text']:
+                elif asking_confirm and 'text' in result and self.validate_response(result, mode=1):
                     print("Please say your name again.")
+                    self.voice.speak("Please say your name again.")
                     asking_confirm = False
 
 
@@ -78,6 +103,7 @@ class FitnessAnalyzer:
         
         asking_confirm = False
         print("What is your age?")
+        self.voice.speak("What is your age?")
 
         while True:
             data = self.stream.read(4000, exception_on_overflow=False)
@@ -89,20 +115,66 @@ class FitnessAnalyzer:
 
                 # Implement commands here
                 result = json.loads(result_str)
-                if 'text' in result and len(result['text']) > 0 and not asking_confirm:
+                if 'text' in result and 1 <= len(result['text'].strip().split()) <= 2 and not asking_confirm and self.validate_response(result, mode=3):
                     age = result["text"]
                     print(f"I heard {age}, is this correct?")
+                    self.voice.speak(f"I heard {age}, is this correct?")
                     asking_confirm = True
-                elif asking_confirm and 'text' in result and 'yes' in result['text']:
+                elif asking_confirm and 'text' in result and self.validate_response(result, mode=0):
                     break
-                elif asking_confirm and 'text' in result and 'no' in result['text']:
+                elif asking_confirm and 'text' in result and self.validate_response(result, mode=1):
                     print("Please say your age again.")
+                    self.voice.speak("Please say your name again.")
                     asking_confirm = False
 
         print(f"Your name is {name} and your age is {age}.")
+        self.voice.speak(f"Your name is {name} and your age is {age}.")
+        f = open("user.txt", "w")
+        if self.user_data == None:
+            f.write('{' + f'"{name}":' + '{' + f'"age": "{age}"' + '}}')
+        else:
+            self.user_data[name] = {"age": age}
+            f.write(json.dumps(self.user_data))
+
+        f.close()
         self.shutdown()
 
     def shutdown(self):
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
+
+    def validate_user(self):
+        print(f"Hello, please state your username to begin.")
+        self.voice.speak(f"Hello, please state your username to begin.")
+
+        name = "Test"
+        asking_confirm = False
+
+        while True:
+            data = self.stream.read(4000, exception_on_overflow=False)
+            if len(data) == 0:
+                break
+            if self.rec.AcceptWaveform(data):
+                result_str = self.rec.Result()
+                print(json.loads(result_str)["text"])
+
+                # Implement commands here
+                result = json.loads(result_str)
+                if 'text' in result and not asking_confirm and self.validate_response(result, mode=2):
+                    name = result["text"]
+                    print(f"I heard {name}, is this correct?")
+                    self.voice.speak(f"I heard {name}, is this correct?")
+                    asking_confirm = True
+                elif asking_confirm and 'text' in result and self.validate_response(result, mode=0):
+                    if self.user_data is not None and name not in self.user_data:
+                        print(f"I don't have a record of you, setting up new user...")
+                        self.voice.speak(f"I don't have a record of you, setting up new user...")
+                        self.setup_new_user()
+                    break
+                elif asking_confirm and 'text' in result and self.validate_response(result, mode=1):
+                    print("Please say your name again.")
+                    self.voice.speak("Please say your name again.")
+                    asking_confirm = False
+        self.shutdown()
+        
