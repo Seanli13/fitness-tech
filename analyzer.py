@@ -30,7 +30,7 @@ class FitnessAnalyzer:
 
     def analyze_exercise(self, exercise_type: str, video_path=0):
         print(f"The chosen exercise is: {exercise_type}")
-        if exercise_type == 'bicep_curl':
+        if exercise_type == 'bicep curl':
             analyze_bicep_curl(self.voice, video_path=video_path)
         elif exercise_type == 'pushups': 
             analyze_pushups(self.voice, video_path=video_path)
@@ -38,7 +38,7 @@ class FitnessAnalyzer:
             analyze_plank(self.voice, video_path=video_path)
         elif exercise_type == 'squat':
             analyze_squat(self.voice, video_path=video_path)
-        elif exercise_type == 'downward_dog':
+        elif exercise_type == 'downward dog':
             analyze_downward_dog(self.voice, video_path=video_path)
         elif exercise_type == 'bench':
             analyze_bench(self.voice, video_path=video_path)
@@ -171,10 +171,45 @@ class FitnessAnalyzer:
                         print(f"I don't have a record of you, setting up new user...")
                         self.voice.speak(f"I don't have a record of you, setting up new user...")
                         self.setup_new_user()
+                    elif self.user_data is not None and name in self.user_data:
+                        self.initiate_user(name)
                     break
                 elif asking_confirm and 'text' in result and self.validate_response(result, mode=1):
                     print("Please say your name again.")
                     self.voice.speak("Please say your name again.")
                     asking_confirm = False
+                
         self.shutdown()
+
+    def initiate_user(self, name):
+        print(f"Hello {name}, what exercises would you like to do?")
+        self.voice.speak(f"Hello {name}, what exercises would you like to do?")
+
+        asking_confirm = False
+        chosen_exercise = ""
         
+        while True:
+            data = self.stream.read(4000, exception_on_overflow=False)
+            if len(data) == 0:
+                break
+            if self.rec.AcceptWaveform(data):
+                result_str = self.rec.Result()
+                print(json.loads(result_str)["text"])
+                result = json.loads(result_str)
+
+                if "text" in result:
+                    if "what exercises" in result["text"]:
+                        self.voice.speak(f"The available exercises are: bicep curl, pushups, planks, squat, downward dog, bench, deadlift")
+                    elif "logout" in result["text"]:
+                        self.setup_new_user()
+                    elif result["text"].strip() in ["bicep curl", "pushups", "planks", "squat", "downward dog", "bench", "deadlift"]:
+                        name = result["text"]
+                        print(f"I heard {name}, is this correct?")
+                        self.voice.speak(f"I heard {name}, is this correct?")
+                        chosen_exercise = name
+                        asking_confirm = True
+                    elif asking_confirm and self.validate_response(result, mode=0):
+                        self.analyze_exercise(chosen_exercise)
+                    elif asking_confirm and self.validate_exercise(result, mode=1):
+                        self.voice.speak("Please say the exercise you want to do again.")
+        self.shutdown()
