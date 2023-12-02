@@ -32,7 +32,7 @@ class FitnessAnalyzer:
         print(f"The chosen exercise is: {exercise_type}")
         if exercise_type == 'bicep curl':
             analyze_bicep_curl(self.voice, video_path=video_path)
-        elif exercise_type == 'pushups': 
+        elif exercise_type == 'push ups': 
             analyze_pushups(self.voice, video_path=video_path)
         elif exercise_type == 'planks': 
             analyze_plank(self.voice, video_path=video_path)
@@ -181,6 +181,38 @@ class FitnessAnalyzer:
                 
         self.shutdown()
 
+    def process_excercise_name(self, value):
+        for phrase in {"bicep", "biceps", "curls", "curl"}:
+            if phrase in value:
+                value = "bicep curl"
+
+        for phrase in {"push up", "pushups"}:
+            if phrase in value:
+                value = "push ups"
+
+        for phrase in {"plank", "plink", "plonk", "plunk"}:
+            if phrase in value:
+                value = "planks"
+
+        for phrase in {"squats", "squatting"}:
+            if phrase in value:
+                value = "squat"
+        
+        for phrase in {"downwards", "downward", "dog", "dogs"}:
+            if phrase in value:
+                value = "downward dog"
+
+        for phrase in {"bench press", "benches"}:
+            if phrase in value:
+                value = "bench"
+
+        for phrase in {"dead lift", "dead lif", "dead live", "dad live", "that lives", "del live"}:
+            if phrase in value:
+                value = "deadlift"
+
+        print(f"Sanitized result: {value}")
+        return value
+
     def initiate_user(self, name):
         print(f"Hello {name}, what exercises would you like to do?")
         self.voice.speak(f"Hello {name}, what exercises would you like to do?")
@@ -198,18 +230,19 @@ class FitnessAnalyzer:
                 result = json.loads(result_str)
 
                 if "text" in result:
-                    if "what exercises" in result["text"]:
-                        self.voice.speak(f"The available exercises are: bicep curl, pushups, planks, squat, downward dog, bench, deadlift")
+                    sanitized_response = self.process_excercise_name(result["text"].strip())
+                    if "what" in result["text"]:
+                        self.voice.speak(f"The available exercises are: bicep curl, push ups, planks, squat, downward dog, bench, deadlift")
                     elif "logout" in result["text"]:
                         self.setup_new_user()
-                    elif result["text"].strip() in ["bicep curl", "pushups", "planks", "squat", "downward dog", "bench", "deadlift"]:
-                        name = result["text"]
+                    elif sanitized_response in {"bicep curl", "push ups", "planks", "squat", "downward dog", "bench", "deadlift"}:
+                        name = sanitized_response
                         print(f"I heard {name}, is this correct?")
                         self.voice.speak(f"I heard {name}, is this correct?")
                         chosen_exercise = name
                         asking_confirm = True
                     elif asking_confirm and self.validate_response(result, mode=0):
                         self.analyze_exercise(chosen_exercise)
-                    elif asking_confirm and self.validate_exercise(result, mode=1):
+                    elif asking_confirm and self.validate_response(result, mode=1):
                         self.voice.speak("Please say the exercise you want to do again.")
         self.shutdown()
