@@ -10,6 +10,7 @@ with open('user.txt', 'r') as file:
 data = json.loads(content)
 file.close()
 
+# Initialize the Fitness Analyzer
 fitness = FitnessAnalyzer(data)
 
 # Now, 'data' contains the dictionary with the contents from your file
