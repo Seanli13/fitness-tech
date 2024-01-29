@@ -1,11 +1,11 @@
 from voice import Voice
-from bicep_curl import analyze_bicep_curl
-from pushup import analyze_pushups
-from plank import analyze_plank
-from squat import analyze_squat
-from downward_dog import analyze_downward_dog
-from bench import analyze_bench
-from deadlift import analyze_deadlift
+from exercises.bicep_curl import analyze_bicep_curl
+from exercises.pushup import analyze_pushups
+from exercises.plank import analyze_plank
+from exercises.squat import analyze_squat
+from exercises.downward_dog import analyze_downward_dog
+from exercises.bench import analyze_bench
+from exercises.deadlift import analyze_deadlift
 import os
 import pyaudio
 import json
