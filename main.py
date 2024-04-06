@@ -3,7 +3,7 @@ from analyzer import FitnessAnalyzer
 import json
 
 # Open and read the contents of your text file
-with open('user.txt', 'r') as file:
+with open('/home/sean/Desktop/fitness-tech/user.txt', 'r') as file:
     content = file.read()
 
 # Load the JSON content into a Python dictionary

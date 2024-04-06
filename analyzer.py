@@ -17,7 +17,7 @@ class FitnessAnalyzer:
         self.user_data = user_data
         self.voice = Voice()
         # Setup Vosk
-        if not os.path.exists("vosk-model-small-en-us-0.15"):
+        if not os.path.exists("/home/sean/Desktop/fitness-tech/vosk-model-small-en-us-0.15"):
             print("Please download the model from https://alphacephei.com/vosk/models and unpack as 'model' in the current folder.")
         else:
             self.model = Model("vosk-model-small-en-us-0.15")
@@ -129,7 +129,7 @@ class FitnessAnalyzer:
 
         print(f"Your name is {name} and your age is {age}.")
         self.voice.speak(f"Your name is {name} and your age is {age}.")
-        f = open("user.txt", "w")
+        f = open("/home/sean/Desktop/fitness-tech/user.txt", "w")
         if self.user_data == None:
             f.write('{' + f'"{name}":' + '{' + f'"age": "{age}"' + '}}')
         else:
