@@ -4,7 +4,7 @@ import posefile as pose
 import util
 
 def analyze_pushups(voice, video_path=0, left=False, speak_count=False, speak_warning=False):
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(video_path,cv2.CAP_DSHOW)
     detector = pose.PoseDetection()
     direction = 1 # 0 is up, 1 is down
     count = 0.5

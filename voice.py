@@ -12,10 +12,6 @@ class Voice:
         voice = self.engine.getProperty("voices")
         self.engine.setProperty('voice', voice[0].id)
 
-    # def speak(self, message):
-    #     self.engine.say(message)
-    #     self.engine.runAndWait()
-
     def speak(self, text):
         try:
             # Create a wav file
@@ -25,6 +21,3 @@ class Voice:
             subprocess.run(["aplay", "output.wav"], check=True)
         except subprocess.CalledProcessError as e:
             print(f"Error occurred: {str(e)}")
-
-
-# text_to_speech("Hello, how are you?")

@@ -5,7 +5,7 @@ import util
 from datetime import datetime
 
 def analyze_plank(voice, video_path=0, speak_warning=False, straight_arm=True):
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(video_path,cv2.CAP_DSHOW)
     detector = pose.PoseDetection()
     leg_delay = 0
     hip_delay = 0

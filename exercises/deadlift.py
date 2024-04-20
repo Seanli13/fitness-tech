@@ -3,7 +3,7 @@ import numpy as np
 import posefile as pose
 
 def analyze_deadlift(voice, video_path=0, speak_warning=False):
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(video_path,cv2.CAP_DSHOW)
     detector = pose.PoseDetection()
     direction = 1
     count = 0.5

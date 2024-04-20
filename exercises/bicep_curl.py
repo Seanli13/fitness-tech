@@ -3,7 +3,7 @@ import numpy as np
 import posefile as pose
 
 def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak_warning=False):
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(video_path,cv2.CAP_DSHOW)
     detector = pose.PoseDetection()
     direction = 0 # 0 is up, 1 is down
     count = 0
@@ -76,6 +76,9 @@ def analyze_bicep_curl(voice, video_path=0, left=False, speak_count=False, speak
                 voice.speak(last_count)
 
             cv2.putText(frame, f"{int(count)} ({'left' if left else 'right'} arm)", (50, 100), cv2.FONT_HERSHEY_PLAIN, 5, (0, 0, 0), 4)
+        else: 
+            # TODO After x amount of seconds, tell the person to come in frame 
+            pass
         cv2.imshow("Bicep Curl Analysis", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

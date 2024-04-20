@@ -3,7 +3,7 @@ import numpy as np
 import posefile as pose
 
 def analyze_downward_dog(voice, video_path=0, speak_warning=False):
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(video_path,cv2.CAP_DSHOW)
     detector = pose.PoseDetection()
     fps = cap.get(cv2.CAP_PROP_FPS)
     delay = fps * 5
