@@ -20,7 +20,7 @@ class FitnessAnalyzer:
         if not os.path.exists("/home/sean/Desktop/fitness-tech/vosk-model-small-en-us-0.15"):
             print("Please download the model from https://alphacephei.com/vosk/models and unpack as 'model' in the current folder.")
         else:
-            self.model = Model("vosk-model-small-en-us-0.15")
+            self.model = Model("/home/sean/Desktop/fitness-tech/vosk-model-small-en-us-0.15")
             self.rec = KaldiRecognizer(self.model, 16000)
 
             # Setup PyAudio
