@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "765181196574",
+    "project_id": "blindvision-fitness",
+    "storage_bucket": "blindvision-fitness.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765181196574:android:60244938df76da8df8b10f",
+        "android_client_info": {
+          "package_name": "com.example.mobile_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOJqnI39QRGe6gKkfWUTs4JTOwTOrJaXE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
