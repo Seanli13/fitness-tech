@@ -13,7 +13,7 @@ class PoseDetection:
                  min_tracking_confidence=0.5):
         self.static_image_mode = static_image_mode
         self.model_complexity = model_complexity
-        self.smooth_landmarks = smooth_segmentation
+        self.smooth_landmarks = smooth_landmarks
         self.enable_segmentation = enable_segmentation
         self.smooth_segmentation = smooth_segmentation
         self.min_detection_confidence = min_detection_confidence
