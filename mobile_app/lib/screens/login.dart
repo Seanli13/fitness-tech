@@ -42,7 +42,10 @@ class LoginScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     Auth()
-                        .signIn(emailController.text, passwordController.text);
+                        .signIn(emailController.text, passwordController.text)
+                        .then((value) {
+                      Navigator.pushNamed(context, '/home');
+                    });
                   },
                   child: const Text('Login'),
                 ),

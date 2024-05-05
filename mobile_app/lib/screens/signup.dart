@@ -32,6 +32,7 @@ class SignupScreen extends StatelessWidget {
               ),
               TextField(
                 controller: passwordController,
+                obscureText: true,
                 decoration: const InputDecoration(labelText: 'Password'),
               ),
               SizedBox(
@@ -39,8 +40,13 @@ class SignupScreen extends StatelessWidget {
                 height: SizeConfig.blockSizeVertical! * 7,
                 child: ElevatedButton(
                   onPressed: () {
-                    Auth().signUp(emailController.text, passwordController.text,
-                        nameController.text);
+                    Auth()
+                        .signUp(emailController.text, passwordController.text,
+                            nameController.text)
+                        .then((value) {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/", (route) => false);
+                    });
                   },
                   child: const Text('Sign Up'),
                 ),

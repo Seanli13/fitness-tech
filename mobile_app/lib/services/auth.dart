@@ -51,4 +51,15 @@ class Auth {
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
   }
+
+  Future<void> deleteAccount() async {
+    // Delete firebase data
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser!.uid)
+        .delete()
+        .then((value) {
+      _auth.currentUser!.delete();
+    });
+  }
 }

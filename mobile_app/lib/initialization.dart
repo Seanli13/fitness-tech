@@ -30,6 +30,7 @@ class Initialization extends StatelessWidget {
         print(snapshot.data);
         if (snapshot.hasData) {
           singleton.userData = snapshot.data!.data() as Map<String, dynamic>;
+          print(singleton.userData);
         }
         return const HomeScreen();
       },
