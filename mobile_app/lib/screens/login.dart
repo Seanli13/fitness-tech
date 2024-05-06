@@ -17,12 +17,19 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              const Text('BlindVision', style: TextStyle(fontSize: 45)),
+              Image.asset(
+                'assets/BlindVision Icon.png',
+                width: 200,
+                height: 200,
+                fit: BoxFit.fill,
+              ),
+              const Text('FitBlind', style: TextStyle(fontSize: 45)),
               TextField(
                 controller: emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
               ),
               TextField(
+                obscureText: true,
                 controller: passwordController,
                 decoration: const InputDecoration(labelText: 'Password'),
               ),
@@ -30,16 +37,19 @@ class LoginScreen extends StatelessWidget {
                 width: SizeConfig.blockSizeHorizontal! * 75,
                 height: SizeConfig.blockSizeVertical! * 7,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                   onPressed: () {
                     Navigator.pushNamed(context, '/signup');
                   },
-                  child: const Text('Sign Up'),
+                  child: const Text('Sign Up',
+                      style: TextStyle(color: Colors.white)),
                 ),
               ),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal! * 75,
                 height: SizeConfig.blockSizeVertical! * 7,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                   onPressed: () {
                     Auth()
                         .signIn(emailController.text, passwordController.text)
@@ -47,7 +57,8 @@ class LoginScreen extends StatelessWidget {
                       Navigator.pushNamed(context, '/home');
                     });
                   },
-                  child: const Text('Login'),
+                  child: const Text('Login',
+                      style: TextStyle(color: Colors.white)),
                 ),
               ),
             ],

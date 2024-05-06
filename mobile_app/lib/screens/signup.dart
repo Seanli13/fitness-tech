@@ -21,7 +21,7 @@ class SignupScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              const Text('BlindVision', style: TextStyle(fontSize: 45)),
+              const Text('FitBlind', style: TextStyle(fontSize: 45)),
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(labelText: 'Name'),
