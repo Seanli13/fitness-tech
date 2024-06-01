@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
                 height: 200,
                 fit: BoxFit.fill,
               ),
-              const Text('FitBlind', style: TextStyle(fontSize: 45)),
+              const Text('BlindVision', style: TextStyle(fontSize: 45)),
               TextField(
                 controller: emailController,
                 decoration: const InputDecoration(labelText: 'Email'),

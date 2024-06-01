@@ -38,6 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     List<Map<String, dynamic>> workouts = [];
 
+    if (singleton.userData['workouts'].isEmpty) {
+      return [];
+    }
     for (var time in singleton.userData['workouts'].keys) {
       var workout = singleton.userData['workouts'][time];
       workout['time'] = timestampToTime(int.parse(time));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/services/auth.dart';
 import 'package:mobile_app/size_config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
@@ -8,6 +9,14 @@ class SignupScreen extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+
+  Future<void> _launchUrl(String url) async {
+    final Uri _url = Uri.parse(url);
+
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +30,11 @@ class SignupScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              const Text('FitBlind', style: TextStyle(fontSize: 45)),
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
+              const Text('BlindVision', style: TextStyle(fontSize: 45)),
+              // TextField(
+              //   controller: nameController,
+              //   decoration: const InputDecoration(labelText: 'Name'),
+              // ),
               TextField(
                 controller: emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
@@ -34,6 +43,23 @@ class SignupScreen extends StatelessWidget {
                 controller: passwordController,
                 obscureText: true,
                 decoration: const InputDecoration(labelText: 'Password'),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      _launchUrl('https://www.google.com');
+                    },
+                    child: const Text('Terms of Service'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _launchUrl('https://flutter.dev');
+                    },
+                    child: const Text('Privacy Policy'),
+                  ),
+                ],
               ),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal! * 75,

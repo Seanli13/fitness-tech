@@ -27,7 +27,7 @@ class Auth {
         email: email,
         password: password,
       );
-      await userCredential.user!.updateDisplayName(username);
+      // await userCredential.user!.updateDisplayName(username);
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userCredential.user!.uid)
@@ -42,6 +42,10 @@ class Auth {
       // print(e.message);
       return null;
     }
+  }
+
+  Future<void> updateUsername(String username) async {
+    await user!.updateDisplayName(username);
   }
 
   Future<void> signOut() async {
