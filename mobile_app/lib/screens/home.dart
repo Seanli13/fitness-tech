@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(Auth().user!.displayName!,
+          title: Text((Auth().user != null) ? Auth().user!.displayName! : "",
               style:
                   const TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
           actions: [

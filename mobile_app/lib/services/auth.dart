@@ -12,8 +12,10 @@ class Auth {
         email: email,
         password: password,
       );
+      print("User signed in successfully!");
       return userCredential.user;
     } on FirebaseAuthException {
+      print("Failed to sign in!");
       // print('Failed with error code: ${e.code}');
       // print(e.message);
       return null;

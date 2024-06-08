@@ -54,6 +54,9 @@ class LoginScreen extends StatelessWidget {
                     Auth()
                         .signIn(emailController.text, passwordController.text)
                         .then((value) {
+                      if (value == null) {
+                        return;
+                      }
                       Navigator.pushNamed(context, '/home');
                     });
                   },
