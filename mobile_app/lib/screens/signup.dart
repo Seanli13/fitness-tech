@@ -49,13 +49,15 @@ class SignupScreen extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      _launchUrl('https://www.google.com');
+                      _launchUrl(
+                          'https://doc-hosting.flycricket.io/blindvision-terms-of-use/f777073e-bb66-485f-8634-43df9d876961/terms');
                     },
                     child: const Text('Terms of Service'),
                   ),
                   TextButton(
                     onPressed: () {
-                      _launchUrl('https://flutter.dev');
+                      _launchUrl(
+                          'https://doc-hosting.flycricket.io/blindvision-privacy-policy/b8fa562a-fc3a-4d36-9e84-db61722cc4fd/privacy');
                     },
                     child: const Text('Privacy Policy'),
                   ),

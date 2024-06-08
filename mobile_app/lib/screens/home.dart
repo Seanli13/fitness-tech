@@ -101,20 +101,76 @@ class _HomeScreenState extends State<HomeScreen> {
                   : 0,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    tileColor: Colors.blue,
-                    title: Text(
-                        "${dataNameToName[workouts[index]['type']]!} - ${workouts[index]['time']}",
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 25)),
-                    subtitle: Text(
-                      "Reps: ${workouts[index]['reps'].toString()}\nHighest: ${getRecord(workouts[index]['type']).toString()}",
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                );
+                    padding: const EdgeInsets.all(8.0),
+                    child: FitnessCard(
+                        workoutName: workouts[index]['type']!,
+                        time: "${workouts[index]['time']}",
+                        reps: workouts[index]['reps'])
+                    // child: ListTile(
+                    //   tileColor: Colors.blue,
+                    //   title: Text(
+                    //       "${dataNameToName[workouts[index]['type']]!} - ${workouts[index]['time']}",
+                    //       style:
+                    //           const TextStyle(color: Colors.white, fontSize: 25)),
+                    //   subtitle: Text(
+                    //     "Reps: ${workouts[index]['reps'].toString()}\nHighest: ${getRecord(workouts[index]['type']).toString()}",
+                    //     style: const TextStyle(color: Colors.white),
+                    //   ),
+                    // ),
+                    );
               },
             )));
+  }
+}
+
+class FitnessCard extends StatelessWidget {
+  FitnessCard(
+      {super.key,
+      required this.workoutName,
+      required this.time,
+      required this.reps});
+  final String workoutName;
+  final String time;
+  final int reps;
+
+  final dataNameToName = {
+    "bicep_curl": "Bicep Curls",
+    "pushups": "Pushups",
+    "downward_dog": "Downward Dog",
+    "plank": "Plank",
+    "squats": "Squats",
+    "bench_press": "Bench Press",
+    "deadlift": "Deadlift",
+  };
+
+  Singleton singleton = Singleton();
+
+  int getRecord(String workout) {
+    if (singleton.userData['records'] == null) {
+      return 0;
+    }
+
+    return singleton.userData['records'][workout];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.blue,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("${dataNameToName[workoutName]} - ${time}",
+                style: const TextStyle(color: Colors.white, fontSize: 25)),
+            Text(
+              "Reps: ${reps.toString()}\nHighest: ${getRecord(workoutName).toString()}",
+              style: const TextStyle(color: Colors.white),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

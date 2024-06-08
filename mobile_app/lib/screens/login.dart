@@ -28,22 +28,24 @@ class LoginScreen extends StatelessWidget {
                 controller: emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
               ),
-              TextField(
-                obscureText: true,
-                controller: passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-              ),
-              SizedBox(
-                width: SizeConfig.blockSizeHorizontal! * 75,
-                height: SizeConfig.blockSizeVertical! * 7,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/signup');
-                  },
-                  child: const Text('Sign Up',
-                      style: TextStyle(color: Colors.white)),
-                ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: SizeConfig.blockSizeHorizontal! * 80,
+                    child: TextField(
+                      obscureText: true,
+                      controller: passwordController,
+                      decoration: const InputDecoration(labelText: 'Password'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 50,
+                    child: IconButton(
+                      icon: Icon(Icons.remove_red_eye_rounded),
+                      onPressed: () {},
+                    ),
+                  )
+                ],
               ),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal! * 75,
@@ -61,6 +63,18 @@ class LoginScreen extends StatelessWidget {
                     });
                   },
                   child: const Text('Login',
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ),
+              SizedBox(
+                width: SizeConfig.blockSizeHorizontal! * 75,
+                height: SizeConfig.blockSizeVertical! * 7,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                  child: const Text('Sign Up',
                       style: TextStyle(color: Colors.white)),
                 ),
               ),

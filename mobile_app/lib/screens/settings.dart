@@ -19,6 +19,18 @@ class SettingsScreen extends StatelessWidget {
               width: SizeConfig.blockSizeHorizontal! * 75,
               height: SizeConfig.blockSizeVertical! * 7,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                child: const Text('Log Out',
+                    style: TextStyle(color: Colors.white)),
+              ),
+            ),
+            SizedBox(
+              width: SizeConfig.blockSizeHorizontal! * 75,
+              height: SizeConfig.blockSizeVertical! * 7,
+              child: ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                 onPressed: () {
                   Auth().deleteAccount().then((value) {
@@ -27,18 +39,6 @@ class SettingsScreen extends StatelessWidget {
                   });
                 },
                 child: const Text('Delete Account',
-                    style: TextStyle(color: Colors.white)),
-              ),
-            ),
-            SizedBox(
-              width: SizeConfig.blockSizeHorizontal! * 75,
-              height: SizeConfig.blockSizeVertical! * 7,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/login');
-                },
-                child: const Text('Log Out',
                     style: TextStyle(color: Colors.white)),
               ),
             ),
