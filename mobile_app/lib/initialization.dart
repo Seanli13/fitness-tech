@@ -28,7 +28,7 @@ class Initialization extends StatelessWidget {
         }
 
         print(snapshot.data);
-        if (snapshot.hasData) {
+        if (snapshot.hasData && snapshot.data!.exists) {
           singleton.userData = snapshot.data!.data() as Map<String, dynamic>;
           print(singleton.userData);
         }

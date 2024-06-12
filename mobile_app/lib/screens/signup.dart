@@ -72,8 +72,14 @@ class SignupScreen extends StatelessWidget {
                         .signUp(emailController.text, passwordController.text,
                             nameController.text)
                         .then((value) {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, "/", (route) => false);
+                      if (value == null) {
+                        print("Failed to sign up!");
+                        return;
+                      }
+                      print("User signed up successfully!");
+                      Navigator.pushNamed(context, '/intro');
+                      // Navigator.pushNamedAndRemoveUntil(
+                      //     context, "/", (route) => false);
                     });
                   },
                   child: const Text('Sign Up'),

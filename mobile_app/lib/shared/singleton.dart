@@ -15,6 +15,16 @@ class Singleton extends ChangeNotifier {
 
   String get name => _name;
 
+  final dataNameToName = {
+    "bicep_curl": "Bicep Curls",
+    "pushups": "Pushups",
+    "downward_dog": "Downward Dog",
+    "plank": "Plank",
+    "squats": "Squats",
+    "bench_press": "Bench Press",
+    "deadlift": "Deadlift",
+  };
+
   void setName(String name) {
     _name = name;
     notifyListeners();

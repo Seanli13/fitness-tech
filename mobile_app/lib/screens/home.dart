@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/shared/singleton.dart';
 import 'package:mobile_app/services/auth.dart';
 import 'package:mobile_app/size_config.dart';
+import 'package:mobile_app/screens/charts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -80,7 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text((Auth().user != null) ? Auth().user!.displayName! : "",
+          title: Text(
+              // (true/false) ? true : false
+              (Auth().user != null && Auth().user!.displayName != null)
+                  ? Auth().user!.displayName!
+                  : "",
               style:
                   const TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
           actions: [
@@ -133,16 +138,6 @@ class FitnessCard extends StatelessWidget {
   final String time;
   final int reps;
 
-  final dataNameToName = {
-    "bicep_curl": "Bicep Curls",
-    "pushups": "Pushups",
-    "downward_dog": "Downward Dog",
-    "plank": "Plank",
-    "squats": "Squats",
-    "bench_press": "Bench Press",
-    "deadlift": "Deadlift",
-  };
-
   Singleton singleton = Singleton();
 
   int getRecord(String workout) {
@@ -157,18 +152,28 @@ class FitnessCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.blue,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("${dataNameToName[workoutName]} - ${time}",
-                style: const TextStyle(color: Colors.white, fontSize: 25)),
-            Text(
-              "Reps: ${reps.toString()}\nHighest: ${getRecord(workoutName).toString()}",
-              style: const TextStyle(color: Colors.white),
-            )
-          ],
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChartScreen(
+                        exerciseType: workoutName,
+                      )));
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("${singleton.dataNameToName[workoutName]} - ${time}",
+                  style: const TextStyle(color: Colors.white, fontSize: 25)),
+              Text(
+                "Reps: ${reps.toString()}\nHighest: ${getRecord(workoutName).toString()}",
+                style: const TextStyle(color: Colors.white),
+              )
+            ],
+          ),
         ),
       ),
     );

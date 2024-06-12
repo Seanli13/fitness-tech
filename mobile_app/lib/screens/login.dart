@@ -11,8 +11,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
+  bool showPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,19 +39,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     width: SizeConfig.blockSizeHorizontal! * 80,
                     child: TextField(
-                      obscureText: true,
+                      obscureText: !showPassword,
                       controller: passwordController,
                       decoration: const InputDecoration(labelText: 'Password'),
                     ),
                   ),
                   SizedBox(
-                    width: 50,
+                    width: SizeConfig.blockSizeHorizontal! * 10,
                     child: IconButton(
-                      icon: Icon(Icons.remove_red_eye_rounded),
-                      onPressed: () {},
+                      icon: const Icon(Icons.remove_red_eye_rounded),
+                      onPressed: () {
+                        setState(() {
+                          showPassword = !showPassword;
+                        });
+                      },
                     ),
                   )
                 ],
+              ),
+              TextButton(
+                onPressed: () {
+                  Auth().resetPassword(emailController.text);
+                },
+                child: const Text('Forgot Password?'),
               ),
               SizedBox(
                 width: SizeConfig.blockSizeHorizontal! * 75,
