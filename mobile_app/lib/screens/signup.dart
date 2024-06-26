@@ -77,9 +77,9 @@ class SignupScreen extends StatelessWidget {
                         return;
                       }
                       print("User signed up successfully!");
-                      Navigator.pushNamed(context, '/intro');
-                      // Navigator.pushNamedAndRemoveUntil(
-                      //     context, "/", (route) => false);
+                      // Navigator.pushNamed(context, '/intro');
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/", (route) => false);
                     });
                   },
                   child: const Text('Sign Up'),

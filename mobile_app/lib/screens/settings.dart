@@ -43,7 +43,10 @@ class SettingsScreen extends StatelessWidget {
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/login');
+                      Auth().signOut().then((value) {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/', (route) => false);
+                      });
                     },
                     child: const Text('Log Out',
                         style: TextStyle(color: Colors.white)),
