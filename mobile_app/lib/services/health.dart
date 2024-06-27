@@ -20,17 +20,39 @@ class HealthUtil {
         HealthDataType.BASAL_ENERGY_BURNED,
       ];
 
-  List<HealthDataType> get types =>
-      Platform.isIOS ? dataTypesIOS : dataTypesAndroid;
+  List<HealthDataType> get types => (Platform.isAndroid)
+      ? dataTypesAndroid
+      : (Platform.isIOS)
+          ? dataTypesIOS
+          : [];
 
   List<HealthDataAccess> get permissions =>
-      types.map((type) => HealthDataAccess.READ).toList();
+      types.map((e) => HealthDataAccess.READ).toList();
 
-  Future<void> requestPermissions() async {
-    final status = await Permission.activityRecognition.request();
-    if (status.isGranted) {
-      await _health.requestAuthorization(types, permissions: permissions);
+  Future<bool> authorize() async {
+    await Permission.activityRecognition.request();
+    await Permission.location.request();
+
+    bool? hasPermissions =
+        await _health.hasPermissions(types, permissions: permissions);
+
+    print("Has permissions: $hasPermissions");
+
+    hasPermissions ??= false;
+
+    bool authorized = false;
+    if (!hasPermissions) {
+      try {
+        print(
+            "Requesting authorization for types: $types and permissions: $permissions");
+        authorized =
+            await _health.requestAuthorization(types, permissions: permissions);
+        print("Authorization status: $authorized");
+      } catch (error) {
+        print("Exception in authorize: $error");
+      }
     }
+    return authorized;
   }
 
   // get health data ever since date of account creation

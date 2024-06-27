@@ -38,6 +38,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   List<Map<String, dynamic>> records = [];
   late PageController _pageController;
   late TabController _tabController;
+  int basalCalories = 0;
+  int activeCalories = 0;
+
   int _currentIndex = 0;
 
   List<ChartData> chartData = [
@@ -122,13 +125,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return singleton.userData['records'][workout];
   }
 
+  int doubleToInt(double value) {
+    return value.toInt();
+  }
+
   Future<void> getHealthData() async {
+    activeCalories = 0;
+    basalCalories = 0;
+
     HealthUtil healthUtil = HealthUtil();
     print("Requesting Permissions...");
-    await healthUtil.requestPermissions();
+    bool authorized = await healthUtil.authorize();
+    if (!authorized) {
+      print("Not Authorized");
+      return;
+    }
     print("Getting Health Data...");
     List<HealthDataPoint> healthData = await healthUtil.getHealthData();
     print(healthData);
+
+    // update basalCalories and activeCalories
+    for (var data in healthData) {
+      if (data.type == HealthDataType.BASAL_ENERGY_BURNED) {
+        basalCalories += doubleToInt(double.parse(
+            data.value.toString().substring(35, data.value.toString().length)));
+      } else if (data.type == HealthDataType.ACTIVE_ENERGY_BURNED) {
+        activeCalories += doubleToInt(double.parse(
+            data.value.toString().substring(35, data.value.toString().length)));
+      }
+    }
+
+    print("Basal Calories: $basalCalories");
+    print("Active Calories: $activeCalories");
+
+    setState(() {});
   }
 
   @override
@@ -226,7 +256,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 )
                               ]),
                             )),
-                      )
+                      ),
+                      const Text("Swipe left to see more health Data >>",
+                          style: TextStyle(color: Colors.blue)),
                     ],
                   ),
                   Column(
@@ -237,12 +269,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           children: [
                             HealthDataCard(
                               name: "Active Calories",
-                              value: 100,
+                              value: activeCalories,
                               unit: "kcal",
                             ),
                             HealthDataCard(
                               name: "Basal Calories",
-                              value: 200,
+                              value: basalCalories,
                               unit: "kcal",
                             ),
                           ]),
