@@ -63,8 +63,10 @@ class SettingsScreen extends StatelessWidget {
                         ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     onPressed: () {
                       Auth().deleteAccount().then((value) {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/', (route) => false);
+                        Auth().signOut().then((value) {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, '/', (route) => false);
+                        });
                       });
                     },
                     child: const Text('Delete Account',

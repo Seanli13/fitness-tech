@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:health/health.dart';
+// import 'package:health/health.dart';
 import 'package:mobile_app/shared/singleton.dart';
 import 'package:mobile_app/services/auth.dart';
 import 'package:mobile_app/size_config.dart';
@@ -53,6 +53,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   List<ChartData> updateChartData() {
     List<ChartData> chartData = [];
     Map<String, int> workoutCount = {"bicep_curl": 0};
+
+    print(singleton.userData);
 
     if (singleton.userData["workouts"].length > 0) {
       for (var workout in singleton.userData["workouts"].values) {
@@ -129,37 +131,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return value.toInt();
   }
 
-  Future<void> getHealthData() async {
-    activeCalories = 0;
-    basalCalories = 0;
+  // Future<void> getHealthData() async {
+  //   activeCalories = 0;
+  //   basalCalories = 0;
 
-    HealthUtil healthUtil = HealthUtil();
-    print("Requesting Permissions...");
-    bool authorized = await healthUtil.authorize();
-    if (!authorized) {
-      print("Not Authorized");
-      return;
-    }
-    print("Getting Health Data...");
-    List<HealthDataPoint> healthData = await healthUtil.getHealthData();
-    print(healthData);
+  //   HealthUtil healthUtil = HealthUtil();
+  //   print("Requesting Permissions...");
+  //   bool authorized = await healthUtil.authorize();
+  //   if (!authorized) {
+  //     print("Not Authorized");
+  //     return;
+  //   }
+  //   print("Getting Health Data...");
+  //   List<HealthDataPoint> healthData = await healthUtil.getHealthData();
+  //   print(healthData);
 
-    // update basalCalories and activeCalories
-    for (var data in healthData) {
-      if (data.type == HealthDataType.BASAL_ENERGY_BURNED) {
-        basalCalories += doubleToInt(double.parse(
-            data.value.toString().substring(35, data.value.toString().length)));
-      } else if (data.type == HealthDataType.ACTIVE_ENERGY_BURNED) {
-        activeCalories += doubleToInt(double.parse(
-            data.value.toString().substring(35, data.value.toString().length)));
-      }
-    }
+  //   // update basalCalories and activeCalories
+  //   for (var data in healthData) {
+  //     if (data.type == HealthDataType.BASAL_ENERGY_BURNED) {
+  //       basalCalories += doubleToInt(double.parse(
+  //           data.value.toString().substring(35, data.value.toString().length)));
+  //     } else if (data.type == HealthDataType.ACTIVE_ENERGY_BURNED) {
+  //       activeCalories += doubleToInt(double.parse(
+  //           data.value.toString().substring(35, data.value.toString().length)));
+  //     }
+  //   }
 
-    print("Basal Calories: $basalCalories");
-    print("Active Calories: $activeCalories");
+  //   print("Basal Calories: $basalCalories");
+  //   print("Active Calories: $activeCalories");
 
-    setState(() {});
-  }
+  //   setState(() {});
+  // }
 
   @override
   void initState() {
@@ -167,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _pageController = PageController();
     _tabController = TabController(length: 3, vsync: this);
 
-    getHealthData();
+    // getHealthData();
   }
 
   @override
@@ -257,29 +259,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               ]),
                             )),
                       ),
-                      const Text("Swipe left to see more health Data >>",
-                          style: TextStyle(color: Colors.blue)),
+                      // const Text("Swipe left to see more health Data >>",
+                      //     style: TextStyle(color: Colors.blue)),
                     ],
                   ),
-                  Column(
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HealthDataCard(
-                              name: "Active Calories",
-                              value: activeCalories,
-                              unit: "kcal",
-                            ),
-                            HealthDataCard(
-                              name: "Basal Calories",
-                              value: basalCalories,
-                              unit: "kcal",
-                            ),
-                          ]),
-                    ],
-                  ),
+                  // Column(
+                  //   children: [
+                  //     Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           HealthDataCard(
+                  //             name: "Active Calories",
+                  //             value: activeCalories,
+                  //             unit: "kcal",
+                  //           ),
+                  //           HealthDataCard(
+                  //             name: "Basal Calories",
+                  //             value: basalCalories,
+                  //             unit: "kcal",
+                  //           ),
+                  //         ]),
+                  //   ],
+                  // ),
                 ]),
           ),
         ]));

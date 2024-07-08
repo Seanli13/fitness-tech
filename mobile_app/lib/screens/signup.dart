@@ -3,11 +3,18 @@ import 'package:mobile_app/services/auth.dart';
 import 'package:mobile_app/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   SignupScreen({super.key});
 
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   TextEditingController emailController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   TextEditingController nameController = TextEditingController();
 
   Future<void> _launchUrl(String url) async {

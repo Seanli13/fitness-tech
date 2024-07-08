@@ -11,7 +11,7 @@ class Singleton extends ChangeNotifier {
 
   String _name = '';
 
-  Map<String, dynamic> userData = {'workouts': []};
+  Map<String, dynamic> userData = {'workouts': {}};
 
   String get name => _name;
 

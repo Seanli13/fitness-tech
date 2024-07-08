@@ -37,6 +37,7 @@ class Auth {
         'username': {
           'age': 0,
         },
+        'workouts': {},
       });
       return userCredential.user;
     } on FirebaseAuthException {
